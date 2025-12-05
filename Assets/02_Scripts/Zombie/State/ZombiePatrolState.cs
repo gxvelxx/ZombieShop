@@ -42,11 +42,14 @@ public class ZombiePatrolState : IZombieState
         //정찰 이동
         Vector3 direction = (_patrolPosition - _zombie.transform.position).normalized;
 
+        direction.y = 0;    // Y값 없애야 경사면 수월
+        direction = direction.normalized;
+
         if (direction.sqrMagnitude > 0.01f)
         {
             Quaternion patrolRotation = Quaternion.LookRotation(direction);
-            _zombie.transform.rotation = Quaternion.RotateTowards(
-                _zombie.transform.rotation, patrolRotation, Time.deltaTime * 180); // 회전 속도
+            _zombie.transform.rotation = Quaternion.Slerp(
+           _zombie.transform.rotation, patrolRotation, Time.deltaTime * 6f); // 회전 속도
         }
 
         _zombie.Rigid.MovePosition(
