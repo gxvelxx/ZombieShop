@@ -27,6 +27,12 @@ public class ZombieChaseState : IZombieState
             return;
 
         float gap = Vector3.Distance(_zombie.transform.position, _zombie.Player.position);
+        //플레이어가 멀어지면 다시 정찰
+        if (gap > 10f)
+        {
+            _zombie.ChangeState(new ZombiePatrolState(_zombie));
+            return;
+        }
 
         //공격사거리 진입시
         if (gap <= _zombie.AttackRange)
