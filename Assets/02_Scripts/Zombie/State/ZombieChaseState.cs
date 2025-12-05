@@ -12,7 +12,7 @@ public class ZombieChaseState : IZombieState
     {
         Debug.Log("Enter Chase");
 
-        // Blend Tree -> Run
+        //Blend Tree -> Run
         _zombie.Animator.SetFloat("Blend", 1f);
     }
 
