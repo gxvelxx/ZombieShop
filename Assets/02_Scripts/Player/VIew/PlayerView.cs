@@ -1,14 +1,23 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerView
 {
-    public void OnDamage()
+    private Slider _HPbar;
+
+    public PlayerView(Slider hpSlider)
     {
-        Debug.Log("Player Hit");
+        _HPbar = hpSlider;
     }
 
-    public void OnDead()
+    public void InitializeHP(int maxHP)
     {
-        
+        _HPbar.maxValue = maxHP;
+        _HPbar.value = maxHP;
+    }
+
+    public void UpdateHP(int currentHP)
+    {
+        _HPbar.value = currentHP;
     }
 }

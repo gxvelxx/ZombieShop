@@ -1,16 +1,20 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     IPlayerState _currentState;
 
     public PlayerModelData ModelData;
+
+    public Slider HPSlider;
     public PlayerView View { get; private set; }
 
     private void Awake()
     {
         ModelData.Initialize();
-        View = new PlayerView();
+        View = new PlayerView(HPSlider);
+        View.InitializeHP(ModelData._maxHP);
     }
 
     private void OnEnable()
@@ -46,7 +50,7 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         ModelData.TakeDamage(damage);
-        View.OnDamage();
+        View.UpdateHP(ModelData._currentHP);
         
         if (ModelData.IsDead())
         {
