@@ -7,6 +7,7 @@ public class ZombieController : MonoBehaviour
     [SerializeField] private float _moveSpeed = 2f;
     [SerializeField] private float _attackRange = 1f;
     [SerializeField] private int _maxHP = 10;
+    [SerializeField] private int _attackDamage = 2;
 
     private float _rotationSpeed = 6f;
 
@@ -25,17 +26,17 @@ public class ZombieController : MonoBehaviour
     [Header("Properties")]
     public float MoveSpeed => _moveSpeed;
     public float AttackRange => _attackRange;
+    public int AttackDamage => _attackDamage;
     public Rigidbody Rigid => _rigid;
     public Transform Player => _player;
     public Animator Animator => _animator;
-    public bool IsDead => isDead;   
+    public bool IsDead => isDead;
 
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
-        //_player = GameObject.FindGameObjectWithTag("Player")?.transform; // 플레이어 위치
-        //_player = FindAnyObjectByType<XROrigin>().Camera.transform; // 땅에박혀서 좀비가 때림;
+        
         _player = GameObject.Find("PlayerBody").transform;
 
         _currentHP = _maxHP;
@@ -123,5 +124,28 @@ public class ZombieController : MonoBehaviour
         _hitCoolDown = true;
         yield return new WaitForSeconds(_hitDelay);
         _hitCoolDown = false;
+    }
+
+    /// <summary>
+    /// 공격 처리
+    /// </summary>
+    public void OnAttackDamage()
+    {
+        if (isDead)
+            return;
+        if (_player == null)
+            return;
+
+        float gap = Vector3.Distance(transform.position, _player.position);
+
+        if (gap <= _attackRange + 0.1f)
+        {
+            PlayerController player = _player.GetComponent<PlayerController>();
+
+            if (player != null)
+            {
+                player.TakeDamage(_attackDamage);
+            }
+        }
     }
 }

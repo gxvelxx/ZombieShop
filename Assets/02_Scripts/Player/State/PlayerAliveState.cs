@@ -21,8 +21,7 @@ public class PlayerAliveState : IPlayerState
 
     public void Update()
     {
-        _player.TakeDamage(1);
-        Debug.Log("HP: " + _player.ModelData._currentHP);
+        
     }
 
     public void FixedUpdate()
