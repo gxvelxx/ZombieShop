@@ -1,16 +1,20 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
     [Header("Zombie Setting")]
     [SerializeField] private float _moveSpeed = 2f;
     [SerializeField] private float _attackRange = 1f;
-    [SerializeField] private int _maxHP = 3;
+    [SerializeField] private int _maxHP = 10;
 
     private float _rotationSpeed = 6f;
 
     private int _currentHP;
     private bool isDead = false;
+
+    private bool _hitCoolDown = false;
+    private float _hitDelay = 0.2f; // 안그럼 한방에 죽음
 
     private Rigidbody _rigid;    
     private Transform _player;
@@ -98,4 +102,26 @@ public class ZombieController : MonoBehaviour
             ChangeState(new ZombieDieState(this));
         }
     }    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (_hitCoolDown)
+            return;
+
+        SwordDamageSender sender = other.GetComponent<SwordDamageSender>();
+
+        if (sender != null)
+        {
+            StartCoroutine(HitCoolDown());
+            int damage = sender.GetDamage();
+            TakeDamage(damage); // 데미지
+        }
+    }
+
+    private IEnumerator HitCoolDown()
+    {
+        _hitCoolDown = true;
+        yield return new WaitForSeconds(_hitDelay);
+        _hitCoolDown = false;
+    }
 }
