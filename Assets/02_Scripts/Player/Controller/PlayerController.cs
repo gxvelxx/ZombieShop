@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public Slider HPSlider;
     public PlayerView View { get; private set; }
 
+    public DamageFlash DamageFlash;
+
     private void Awake()
     {
         ModelData.Initialize();
@@ -51,6 +53,11 @@ public class PlayerController : MonoBehaviour
     {
         ModelData.TakeDamage(damage);
         View.UpdateHP(ModelData._currentHP);
+
+        if (DamageFlash != null)
+        {
+            DamageFlash.PlayFlash();
+        }
         
         if (ModelData.IsDead())
         {
