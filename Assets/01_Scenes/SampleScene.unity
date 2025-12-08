@@ -668,7 +668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnInterval: 3
-  _worldMaxZombie: 50
+  _worldMaxZombie: 80
   _spawnPoints:
   - {fileID: 84384298}
   - {fileID: 1180039218}
@@ -1013,6 +1013,30 @@ PrefabInstance:
     - target: {fileID: 3340474519632703509, guid: eccb06d7535610745a52daa02da65929, type: 3}
       propertyPath: m_Name
       value: XR Origin (XR Rig)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3995024151914520368, guid: eccb06d7535610745a52daa02da65929, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3995024151914520368, guid: eccb06d7535610745a52daa02da65929, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: affa059594145a843b81788037b4ee21, type: 3}
+    - target: {fileID: 3995024151914520368, guid: eccb06d7535610745a52daa02da65929, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3995024151914520368, guid: eccb06d7535610745a52daa02da65929, type: 3}
+      propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3995024151914520368, guid: eccb06d7535610745a52daa02da65929, type: 3}
+      propertyPath: m_FillMethod
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882062945724461499, guid: eccb06d7535610745a52daa02da65929, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4882062945724461499, guid: eccb06d7535610745a52daa02da65929, type: 3}
       propertyPath: m_AnchorMax.y

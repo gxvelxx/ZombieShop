@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 public class ZombieController : MonoBehaviour
 {
     [Header("Zombie Setting")]
-    [SerializeField] private float _moveSpeed = 2f;
+    [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private float _attackRange = 1f;
     [SerializeField] private int _maxHP = 10;
     [SerializeField] private int _attackDamage = 2;
