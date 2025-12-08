@@ -14,13 +14,24 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        ModelData.Initialize();
+        //ModelData.Initialize();
         View = new PlayerView(HPSlider);
-        View.InitializeHP(ModelData._maxHP);
+        //View.InitializeHP(ModelData._maxHP);
     }
 
-    private void OnEnable()
+    //private void OnEnable()
+    //{
+    //    ChangeState(new PlayerAliveState(this));
+    //}
+
+    /// <summary>
+    /// 게임매니저가 플레이어 초기화
+    /// </summary>
+    public void InitializePlayer()
     {
+        ModelData.Initialize();
+        View.InitializeHP(ModelData._maxHP);
+
         ChangeState(new PlayerAliveState(this));
     }
 

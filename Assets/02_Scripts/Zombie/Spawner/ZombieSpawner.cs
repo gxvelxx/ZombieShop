@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class ZombieSpawner : MonoBehaviour
 {
@@ -17,14 +18,31 @@ public class ZombieSpawner : MonoBehaviour
     public Transform _player;
     public float _safeGap = 10f;
 
-    private void Start()
-    {
+    //private void Start()
+    //{
+    //    foreach (var spawnPoint in _spawnPoints)
+    //    {
+    //        if (spawnPoint != null && spawnPoint.Data != null)
+    //        {
+    //            spawnPoint.Data._currentCount = 0;
+    //        }
+    //    }
+    //
+    //    _worldCurrentCount = 0;
+    //
+    //    SpawnInitiate();
+    //    StartCoroutine(SpawnRoutine());
+    //}
+
+    /// <summary>
+    /// 게임매니저가 스포너 초기화
+    /// </summary>
+    public void InitializeSpawner()
+    {        
         foreach (var spawnPoint in _spawnPoints)
         {
             if (spawnPoint != null && spawnPoint.Data != null)
-            {
                 spawnPoint.Data._currentCount = 0;
-            }
         }
 
         _worldCurrentCount = 0;
@@ -43,7 +61,7 @@ public class ZombieSpawner : MonoBehaviour
 
     private IEnumerator SpawnRoutine()
     {
-        while (true)
+        while (GameManager.Instance.Playing)
         {
             yield return new WaitForSeconds(_spawnInterval);
 

@@ -10,6 +10,7 @@ public class PlayerDeadState : IPlayerState
     public void Enter()
     {
         Debug.Log("Enter Dead");
+        GameManager.Instance.OnPlayerDead();
     }
 
     public void Exit()

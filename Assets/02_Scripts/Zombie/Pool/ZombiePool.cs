@@ -8,13 +8,12 @@ public class ZombiePool : MonoBehaviour
     public GameObject _zombiePrefab;
     private ObjectPool<GameObject> _pool;
 
+
+
     private void Awake()
     {
         Instance = this;
-    }
 
-    private void Start()
-    {
         _pool = new ObjectPool<GameObject>(
             createFunc: () =>
             {
@@ -26,15 +25,11 @@ public class ZombiePool : MonoBehaviour
                 obj.GetComponent<ZombieController>().SetPool(_pool);
                 return obj;
             },
-            actionOnGet: obj =>
-            {
-                //obj.transform.SetParent(this.transform);
-                obj.SetActive(true);
-            },
+            actionOnGet: obj => obj.SetActive(true),
             actionOnRelease: obj => obj.SetActive(false),
             actionOnDestroy: obj => Destroy(obj)
         );
-    }
+    }    
 
     public GameObject SpawnZombie(Vector3 position)
     {
