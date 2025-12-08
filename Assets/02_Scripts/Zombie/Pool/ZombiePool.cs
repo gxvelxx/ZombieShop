@@ -28,7 +28,7 @@ public class ZombiePool : MonoBehaviour
             },
             actionOnGet: obj =>
             {
-                obj.transform.SetParent(this.transform);
+                //obj.transform.SetParent(this.transform);
                 obj.SetActive(true);
             },
             actionOnRelease: obj => obj.SetActive(false),

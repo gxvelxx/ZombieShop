@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class ZombiePatrolState : IZombieState
 {
@@ -17,8 +18,20 @@ public class ZombiePatrolState : IZombieState
         _zombie.Animator.SetFloat("Blend", 0.5f);
 
         //주위 랜덤
-        _patrolPosition = _zombie.transform.position +
-            new Vector3(Random.Range(-3f, 3f), 0, Random.Range(-3f, 3f));        
+        //_patrolPosition = _zombie.transform.position +
+        //    new Vector3(Random.Range(-3f, 3f), 0, Random.Range(-3f, 3f));
+        Vector3 offset = new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
+        Vector3 randomPos = _zombie.transform.position + offset;
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPos, out hit, 5f, NavMesh.AllAreas))
+        {
+            _patrolPosition = hit.position;
+        }
+        else
+        {
+            _patrolPosition = _zombie.transform.position + (offset.normalized * 3f);
+        }
     }
 
     public void Exit()

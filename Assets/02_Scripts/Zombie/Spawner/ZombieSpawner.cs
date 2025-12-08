@@ -38,13 +38,14 @@ public class ZombieSpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(_spwanInterval);
 
-            if (_currentCount >= _maxZombieCount)
-                continue;
-
-            TrySpawnZombie();
+            if (_currentCount < _maxZombieCount)
+                TrySpawnZombie();
         }
     }
 
+    /// <summary>
+    /// NavMesh 확인 후 스폰처리
+    /// </summary>
     private void TrySpawnZombie()
     {
         if (_spawnPoints.Length == 0)
@@ -76,10 +77,13 @@ public class ZombieSpawner : MonoBehaviour
 
     private void Spawn(Vector3 pos)
     {
-        GameObject zombie = ZombiePool.Instance.SpawnZombie(pos);
+        GameObject zombie = ZombiePool.Instance.SpawnZombie(pos);        
         _currentCount++;
 
-        zombie.GetComponent<ZombieController>().OnDeadCallback = () =>
+        ZombieController controller = zombie.GetComponent<ZombieController>();
+        controller.InitializeAtSpawn(pos);
+
+        controller.OnDeadCallback = () =>
         {
             _currentCount--;
         };
@@ -94,12 +98,28 @@ public class ZombieSpawner : MonoBehaviour
 
         NavMeshHit hit;
 
-        //실패시 그 주변 탐색
+        //실패시 스폰할 위치 주변 탐색
         if (NavMesh.SamplePosition(randomPos, out hit, 3f, NavMesh.AllAreas))
         {
             return hit.position;
         }
 
         return Vector3.zero; // Nav 위 아니면 실패
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_spawnPoints == null)
+            return;
+
+        Gizmos.color = Color.cyan;
+
+        foreach (var point in _spawnPoints)
+        {
+            if (point == null) continue;
+
+            // 스폰 반경을 원으로 표시
+            Gizmos.DrawWireSphere(point.position, _spawnRadius);
+        }
     }
 }

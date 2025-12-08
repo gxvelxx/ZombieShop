@@ -44,17 +44,35 @@ public class ZombieController : MonoBehaviour
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody>();
-        _animator = GetComponent<Animator>();
-        
+        _animator = GetComponent<Animator>();        
         _player = GameObject.Find("PlayerBody").transform;
 
-        _currentHP = _maxHP;
+        //_currentHP = _maxHP;
     }
 
-    private void OnEnable()
+    /// <summary>
+    /// 스폰 후 반드시 호출해야하는 초기화 함수
+    /// </summary>
+    /// <param name="spawnPos"></param>
+    public void InitializeAtSpawn(Vector3 spawnPos)
     {
-        ChangeState(new ZombiePatrolState(this)); // 기본상태
+        transform.position = spawnPos;
+
+        _currentHP = _maxHP;
+        isDead = false;
+
+        _hitCoolDown = false;
+
+        _animator.Rebind();
+        _animator.Update(0);
+
+        ChangeState(new ZombiePatrolState(this));
     }
+
+    //private void OnEnable()
+    //{
+    //    ChangeState(new ZombiePatrolState(this)); // 기본상태
+    //}
 
     private void Update()
     {
