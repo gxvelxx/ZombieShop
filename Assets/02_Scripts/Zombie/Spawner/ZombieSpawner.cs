@@ -5,14 +5,13 @@ using UnityEngine.AI;
 public class ZombieSpawner : MonoBehaviour
 {
     [Header("Spawn Setting")]
-    public float _spwanInterval = 3f;
-    public int _maxZombieCount = 50;
+    public float _spawnInterval = 3f;
+    public int _worldMaxZombie = 50;
 
-    private int _currentCount = 0;
+    private int _worldCurrentCount = 0;
 
     [Header("Spawn Area")]
-    public Transform[] _spawnPoints;
-    public float _spawnRadius = 50f;
+    public SpawnPoint[] _spawnPoints;
 
     [Header("Player Avoid Setting")]
     public Transform _player;
@@ -20,13 +19,23 @@ public class ZombieSpawner : MonoBehaviour
 
     private void Start()
     {
+        foreach (var spawnPoint in _spawnPoints)
+        {
+            if (spawnPoint != null && spawnPoint.Data != null)
+            {
+                spawnPoint.Data._currentCount = 0;
+            }
+        }
+
+        _worldCurrentCount = 0;
+
         SpawnInitiate();
         StartCoroutine(SpawnRoutine());
     }
 
     private void SpawnInitiate()
     {
-        for (int i = 0; i < _maxZombieCount; i++)
+        for (int i = 0; i < _worldMaxZombie; i++)
         {
             TrySpawnZombie();
         }
@@ -36,9 +45,9 @@ public class ZombieSpawner : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(_spwanInterval);
+            yield return new WaitForSeconds(_spawnInterval);
 
-            if (_currentCount < _maxZombieCount)
+            if (_worldCurrentCount < _worldMaxZombie)
                 TrySpawnZombie();
         }
     }
@@ -54,13 +63,17 @@ public class ZombieSpawner : MonoBehaviour
             return;
         }
 
-        Transform area = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
+        SpawnPoint area = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
+        SpawnPointData data = area.Data;
+        
+        if (data._currentCount >= data._maxCount) // 해당 포인트가 꽉 차있으면 패스
+            return;
 
         const int maxAttempts = 10; // Nav체크시도
 
         for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
-            Vector3 randomPos = GetRandomNavPosition(area.position);
+            Vector3 randomPos = GetRandomNavPosition(area.transform.position, data._radius);
 
             if (randomPos == Vector3.zero)
                 continue; // Nav 위가 아니면 다시
@@ -68,30 +81,32 @@ public class ZombieSpawner : MonoBehaviour
             if (Vector3.Distance(randomPos, _player.position) < _safeGap)
                 continue; // 가까우면 다시
 
-            Spawn(randomPos);
+            Spawn(randomPos, data);
             return;
         }
 
         Debug.Log("Not Found NavArea");
     }
 
-    private void Spawn(Vector3 pos)
+    private void Spawn(Vector3 pos, SpawnPointData data)
     {
-        GameObject zombie = ZombiePool.Instance.SpawnZombie(pos);        
-        _currentCount++;
+        GameObject zombie = ZombiePool.Instance.SpawnZombie(pos);
+        _worldCurrentCount++;
+        data._currentCount++;
 
         ZombieController controller = zombie.GetComponent<ZombieController>();
         controller.InitializeAtSpawn(pos);
 
         controller.OnDeadCallback = () =>
-        {
-            _currentCount--;
+        {            
+            _worldCurrentCount--;
+            data._currentCount--;
         };
     }
 
-    private Vector3 GetRandomNavPosition(Vector3 center)
+    private Vector3 GetRandomNavPosition(Vector3 center, float radius)
     {
-        Vector2 circle = Random.insideUnitCircle * _spawnRadius;
+        Vector2 circle = Random.insideUnitCircle * radius;
 
         Vector3 randomPos = new Vector3(
             center.x + circle.x, center.y, center.z + circle.y);
@@ -117,9 +132,10 @@ public class ZombieSpawner : MonoBehaviour
         foreach (var point in _spawnPoints)
         {
             if (point == null) continue;
+            if (point.Data == null) continue;
 
             // 스폰 반경을 원으로 표시
-            Gizmos.DrawWireSphere(point.position, _spawnRadius);
+            Gizmos.DrawWireSphere(point.transform.position, point.Data._radius);
         }
     }
 }
