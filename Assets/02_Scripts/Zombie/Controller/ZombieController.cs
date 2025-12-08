@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class ZombieController : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class ZombieController : MonoBehaviour
 
     private IZombieState _currentState;
 
+    private ObjectPool<GameObject> _pool;
+
+    public System.Action OnDeadCallback; // 스포너한테 알리기
+
     [Header("Properties")]
     public float MoveSpeed => _moveSpeed;
     public float AttackRange => _attackRange;
@@ -31,6 +36,10 @@ public class ZombieController : MonoBehaviour
     public Transform Player => _player;
     public Animator Animator => _animator;
     public bool IsDead => isDead;
+    public void SetPool(ObjectPool<GameObject> pool)
+    {
+        _pool = pool;
+    }
 
     private void Awake()
     {
@@ -49,7 +58,10 @@ public class ZombieController : MonoBehaviour
 
     private void Update()
     {
-        LookTarget();
+        if (_currentState is ZombieChaseState || _currentState is ZombieAttackState)
+        {
+            LookTarget();
+        }
         _currentState?.Update();
     }
 
@@ -100,7 +112,12 @@ public class ZombieController : MonoBehaviour
         if (_currentHP <= 0)
         {
             isDead = true;
+
+            OnDeadCallback?.Invoke(); // 스포너알림
+
             ChangeState(new ZombieDieState(this));
+
+            ReleaseToPool(); // 다시 풀로
         }
     }    
 
@@ -147,5 +164,16 @@ public class ZombieController : MonoBehaviour
                 player.TakeDamage(_attackDamage);
             }
         }
+    }
+
+    /// <summary>
+    /// 풀로 다시 보내기
+    /// </summary>
+    public void ReleaseToPool()
+    {
+        if (_pool != null)
+            _pool.Release(this.gameObject);
+        else
+            Destroy(gameObject);
     }
 }
