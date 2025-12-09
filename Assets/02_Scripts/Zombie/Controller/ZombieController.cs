@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -40,6 +41,10 @@ public class ZombieController : MonoBehaviour
     {
         _pool = pool;
     }
+
+    public static Action OnZombieHit;
+    public static Action OnZombieAttack;
+    public static Action OnZombieChase;
 
     private void Awake()
     {
@@ -127,6 +132,8 @@ public class ZombieController : MonoBehaviour
 
         _currentHP -= damage;
 
+        OnZombieHit?.Invoke(); // 맞는 사운드 이벤트
+
         if (_currentHP <= 0)
         {
             isDead = true;
@@ -171,6 +178,8 @@ public class ZombieController : MonoBehaviour
         if (_player == null)
             return;
 
+        OnZombieAttack?.Invoke(); // 때리는 사운드 이벤트
+
         float gap = Vector3.Distance(transform.position, _player.position);
 
         if (gap <= _attackRange + 0.1f)
@@ -182,6 +191,11 @@ public class ZombieController : MonoBehaviour
                 player.TakeDamage(_attackDamage);
             }
         }
+    }
+
+    public void OnFootstep()
+    {
+        OnZombieChase?.Invoke();
     }
 
     /// <summary>

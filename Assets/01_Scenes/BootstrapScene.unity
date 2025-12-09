@@ -364,6 +364,14 @@ MonoBehaviour:
   _bgmVolume: 0.6
   _sfxVolume: 0.8
   _gameStartSFX: {fileID: 8300000, guid: 9dcd13733ae1542fba4664e841eb4fff, type: 3}
+  _ZombieHitSFX: {fileID: 8300000, guid: 7b8f7cd6c1ac44425bef51e36781b251, type: 3}
+  _ZombieAttackSFX: {fileID: 8300000, guid: 29726c349dbf64b0aadfe8c9ec00d728, type: 3}
+  _ZombieChaseSFX:
+  - {fileID: 8300000, guid: 2c536cff31c3a402898ac356ebd96aba, type: 3}
+  - {fileID: 8300000, guid: cfaa31361f7ba4a23b747862467ff938, type: 3}
+  - {fileID: 8300000, guid: dcfc7dfb0dfd04a50a68e5c5d29e67c0, type: 3}
+  - {fileID: 8300000, guid: 80e9f3f626b53418ebb33bcc0bf2e7fd, type: 3}
+  - {fileID: 8300000, guid: 8503c42970d2247a89300b4be374668c, type: 3}
 --- !u!1 &539785275
 GameObject:
   m_ObjectHideFlags: 0

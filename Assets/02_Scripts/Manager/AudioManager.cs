@@ -15,6 +15,11 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 1f)] public float _sfxVolume = 0.8f;
 
     public AudioClip _gameStartSFX;
+    public AudioClip _ZombieHitSFX;
+    public AudioClip _ZombieAttackSFX;
+    public AudioClip[] _ZombieChaseSFX;
+
+    private int _zombieChaseIndex = 0;
 
     private void Awake()
     {
@@ -24,7 +29,10 @@ public class AudioManager : MonoBehaviour
             //DontDestroyOnLoad(gameObject);
 
             GameManager.OnGameSceneStarted += PlayGameStartSound;
-            
+            ZombieController.OnZombieHit += PlayZombieHit;
+            ZombieController.OnZombieAttack += PlayZombieAttack;
+            ZombieController.OnZombieChase += PlayZombieChase;
+
             _bgmSource.loop = true;
         }
         else
@@ -43,6 +51,9 @@ public class AudioManager : MonoBehaviour
     private void OnDestroy()
     {
         GameManager.OnGameSceneStarted -= PlayGameStartSound;
+        ZombieController.OnZombieHit -= PlayZombieHit;
+        ZombieController.OnZombieAttack -= PlayZombieAttack;
+        ZombieController.OnZombieChase -= PlayZombieChase;
     }
 
     /// <summary>
@@ -109,5 +120,30 @@ public class AudioManager : MonoBehaviour
     {
         if (_gameStartSFX != null)
             PlaySFX(_gameStartSFX);
+    }
+
+    private void PlayZombieHit()
+    {
+        if (_ZombieHitSFX != null)
+            PlaySFX(_ZombieHitSFX);
+    }
+
+    private void PlayZombieAttack()
+    {
+        if (_ZombieAttackSFX != null)
+            PlaySFX(_ZombieAttackSFX);
+    }
+
+    private void PlayZombieChase()
+    {
+        if (_ZombieChaseSFX == null || _ZombieChaseSFX.Length == 0)
+            return;
+
+        PlaySFX(_ZombieChaseSFX[_zombieChaseIndex]);
+
+        _zombieChaseIndex++;
+
+        if (_zombieChaseIndex >= _ZombieChaseSFX.Length)
+            _zombieChaseIndex = 0;
     }
 }
