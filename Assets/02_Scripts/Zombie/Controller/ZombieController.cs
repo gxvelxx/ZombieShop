@@ -138,6 +138,8 @@ public class ZombieController : MonoBehaviour
         {
             isDead = true;
 
+            GameManager.Instance.AddKill(); //좀비 처치 카운트
+
             OnDeadCallback?.Invoke(); // 스포너알림
 
             ChangeState(new ZombieDieState(this));

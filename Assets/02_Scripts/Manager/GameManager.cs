@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public bool Playing { get; private set; } = false;
+    public int KillCount { get; private set; }
+    public float PlayTime { get; private set; }
 
     public static event Action OnGameSceneStarted;
 
@@ -21,7 +23,21 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
+    }
+
+    private void Update()
+    {
+        if (Playing)
+        {
+            PlayTime = Time.deltaTime;
+        }
+    }
+
+    public void AddKill()
+    {
+        KillCount++;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -37,6 +53,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameScene Intialiezed");
 
         Playing = true;
+        KillCount = 0;
+        PlayTime = 0;
 
         //오디오
         OnGameSceneStarted?.Invoke();
@@ -67,6 +85,8 @@ public class GameManager : MonoBehaviour
 
         Playing = false;
 
-        SceneController.Instance.LoadMenu();
+        GameOverUI.Instance.Show(KillCount, PlayTime);
+
+        //SceneController.Instance.LoadMenu();
     }
 }
