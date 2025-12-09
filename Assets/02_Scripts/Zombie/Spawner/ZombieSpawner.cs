@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 
 public class ZombieSpawner : MonoBehaviour
 {
@@ -16,23 +15,7 @@ public class ZombieSpawner : MonoBehaviour
 
     [Header("Player Avoid Setting")]
     public Transform _player;
-    public float _safeGap = 10f;
-
-    //private void Start()
-    //{
-    //    foreach (var spawnPoint in _spawnPoints)
-    //    {
-    //        if (spawnPoint != null && spawnPoint.Data != null)
-    //        {
-    //            spawnPoint.Data._currentCount = 0;
-    //        }
-    //    }
-    //
-    //    _worldCurrentCount = 0;
-    //
-    //    SpawnInitiate();
-    //    StartCoroutine(SpawnRoutine());
-    //}
+    public float _safeGap = 10f;    
 
     /// <summary>
     /// 게임매니저가 스포너 초기화

@@ -15,8 +15,7 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            Instance = this;
-            //DontDestroyOnLoad(gameObject);
+            Instance = this;            
 
             SceneManager.sceneLoaded += OnSceneLoaded; // 씬 로드
         }
@@ -85,9 +84,7 @@ public class GameManager : MonoBehaviour
 
         Playing = false;
 
-        GameOverUI.Instance.Show(KillCount, PlayTime);
-
-        //SceneController.Instance.LoadMenu();
+        GameOverUI.Instance.Show(KillCount, PlayTime);        
     }
 
     public void OnPlayerWin()

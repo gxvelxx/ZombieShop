@@ -6,8 +6,8 @@ using UnityEngine.Pool;
 public class ZombieController : MonoBehaviour
 {
     [Header("Zombie Setting")]
-    [SerializeField] private float _moveSpeed = 3f;
-    [SerializeField] private float _attackRange = 1f;
+    [SerializeField] private float _moveSpeed = 3.2f;
+    [SerializeField] private float _attackRange = 1.1f;
     [SerializeField] private int _maxHP = 10;
     [SerializeField] private int _attackDamage = 3;
 
@@ -50,9 +50,7 @@ public class ZombieController : MonoBehaviour
     {
         _rigid = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();        
-        _player = GameObject.Find("PlayerBody").transform;
-
-        //_currentHP = _maxHP;
+        _player = GameObject.Find("PlayerBody").transform;        
     }
 
     /// <summary>
@@ -72,12 +70,7 @@ public class ZombieController : MonoBehaviour
         _animator.Update(0);
 
         ChangeState(new ZombiePatrolState(this));
-    }
-
-    //private void OnEnable()
-    //{
-    //    ChangeState(new ZombiePatrolState(this)); // 기본상태
-    //}
+    }   
 
     private void Update()
     {
@@ -197,6 +190,9 @@ public class ZombieController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 좀비 처치시 플레이어 체력회복
+    /// </summary>
     private void TryHealPlayer()
     {
         int roll = UnityEngine.Random.Range(0, 100);

@@ -7,6 +7,7 @@ public class PlayerDeadState : IPlayerState
     {
         _player = player;
     }
+
     public void Enter()
     {
         Debug.Log("Enter Dead");

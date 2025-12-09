@@ -13,16 +13,9 @@ public class PlayerController : MonoBehaviour
     public DamageFlash DamageFlash;
 
     private void Awake()
-    {
-        //ModelData.Initialize();
-        View = new PlayerView(HPSlider);
-        //View.InitializeHP(ModelData._maxHP);
-    }
-
-    //private void OnEnable()
-    //{
-    //    ChangeState(new PlayerAliveState(this));
-    //}
+    {        
+        View = new PlayerView(HPSlider);        
+    }    
 
     /// <summary>
     /// 게임매니저가 플레이어 초기화

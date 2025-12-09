@@ -8,8 +8,6 @@ public class ZombiePool : MonoBehaviour
     public GameObject _zombiePrefab;
     private ObjectPool<GameObject> _pool;
 
-
-
     private void Awake()
     {
         Instance = this;

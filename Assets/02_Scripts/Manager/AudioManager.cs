@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
@@ -25,8 +24,7 @@ public class AudioManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            Instance = this;
-            //DontDestroyOnLoad(gameObject);
+            Instance = this;            
 
             GameManager.OnGameSceneStarted += PlayGameStartSound;
             ZombieController.OnZombieHit += PlayZombieHit;

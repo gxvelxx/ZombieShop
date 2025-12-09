@@ -17,9 +17,7 @@ public class ZombiePatrolState : IZombieState
         //Blend Tree -> Walk
         _zombie.Animator.SetFloat("Blend", 0.5f);
 
-        //주위 랜덤
-        //_patrolPosition = _zombie.transform.position +
-        //    new Vector3(Random.Range(-3f, 3f), 0, Random.Range(-3f, 3f));
+        //주위 랜덤        
         Vector3 offset = new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
         Vector3 randomPos = _zombie.transform.position + offset;
 

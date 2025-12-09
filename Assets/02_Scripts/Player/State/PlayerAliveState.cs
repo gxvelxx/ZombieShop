@@ -3,7 +3,6 @@
 public class PlayerAliveState : IPlayerState
 {
     PlayerController _player;
-
     public PlayerAliveState(PlayerController player)
     {
         _player = player;
