@@ -1375,7 +1375,7 @@ MonoBehaviour:
   _moveSpeed: 3
   _attackRange: 1
   _maxHP: 10
-  _attackDamage: 2
+  _attackDamage: 3
 --- !u!95 &1928243870520637218
 Animator:
   serializedVersion: 7

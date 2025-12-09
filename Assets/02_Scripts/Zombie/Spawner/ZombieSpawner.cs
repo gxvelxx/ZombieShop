@@ -7,7 +7,7 @@ public class ZombieSpawner : MonoBehaviour
 {
     [Header("Spawn Setting")]
     public float _spawnInterval = 3f;
-    public int _worldMaxZombie = 80;
+    public int _worldMaxZombie = 120;
 
     private int _worldCurrentCount = 0;
 

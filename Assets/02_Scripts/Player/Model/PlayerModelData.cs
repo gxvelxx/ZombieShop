@@ -22,4 +22,12 @@ public class PlayerModelData : ScriptableObject
     {
         return _currentHP <= 0;
     }
+
+    public void Heal(int value)
+    {
+        _currentHP += value;
+
+        if (_currentHP > _maxHP)
+            _currentHP = _maxHP;
+    }
 }

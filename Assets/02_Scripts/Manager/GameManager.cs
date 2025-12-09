@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     {
         if (Playing)
         {
-            PlayTime = Time.deltaTime;
+            PlayTime += Time.deltaTime;
         }
     }
 
@@ -88,5 +88,16 @@ public class GameManager : MonoBehaviour
         GameOverUI.Instance.Show(KillCount, PlayTime);
 
         //SceneController.Instance.LoadMenu();
+    }
+
+    public void OnPlayerWin()
+    {
+        Debug.Log("Game Win!!!");
+
+        Playing = false;
+
+        GameOverUI.Instance.ShowWin(KillCount, PlayTime);
+
+        Time.timeScale = 0f;
     }
 }

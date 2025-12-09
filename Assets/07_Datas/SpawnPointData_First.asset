@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SpawnPointData_First
   m_EditorClassIdentifier: 
   _radius: 50
-  _maxCount: 8
+  _maxCount: 10
   _currentCount: 8

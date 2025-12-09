@@ -9,7 +9,7 @@ public class ZombieController : MonoBehaviour
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private float _attackRange = 1f;
     [SerializeField] private int _maxHP = 10;
-    [SerializeField] private int _attackDamage = 2;
+    [SerializeField] private int _attackDamage = 3;
 
     private float _rotationSpeed = 6f;
 
@@ -138,6 +138,8 @@ public class ZombieController : MonoBehaviour
         {
             isDead = true;
 
+            TryHealPlayer(); // 플레이어 체력회복
+
             GameManager.Instance.AddKill(); //좀비 처치 카운트
 
             OnDeadCallback?.Invoke(); // 스포너알림
@@ -195,6 +197,25 @@ public class ZombieController : MonoBehaviour
         }
     }
 
+    private void TryHealPlayer()
+    {
+        int roll = UnityEngine.Random.Range(0, 100);
+
+        if (roll < 1) // 플레이어 체력회복 확률
+        {
+            PlayerController player = _player.GetComponent<PlayerController>();
+
+            if (player != null)
+            {
+                player.ModelData.Heal(6); // 플레이어 체력회복 수치
+                player.View.UpdateHP(player.ModelData._currentHP);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 좀비 뛰는소리
+    /// </summary>
     public void OnFootstep()
     {
         OnZombieChase?.Invoke();

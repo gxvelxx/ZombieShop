@@ -46,7 +46,7 @@ public class ZombiePatrolState : IZombieState
 
         //빌견하면 추적상태로
         float gap = Vector3.Distance(_zombie.transform.position, _zombie.Player.position);
-        if (gap < 9f)
+        if (gap < 10f)
         {
             _zombie.ChangeState(new ZombieChaseState(_zombie));
             return;

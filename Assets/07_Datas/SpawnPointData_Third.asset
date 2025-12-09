@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SpawnPointData_Third
   m_EditorClassIdentifier: 
   _radius: 80
-  _maxCount: 32
+  _maxCount: 40
   _currentCount: 17
