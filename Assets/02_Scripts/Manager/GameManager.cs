@@ -1,18 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
     public bool Playing { get; private set; } = false;
+
+    public static event Action OnGameSceneStarted;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
 
             SceneManager.sceneLoaded += OnSceneLoaded; // 씬 로드
         }
@@ -36,14 +38,17 @@ public class GameManager : MonoBehaviour
 
         Playing = true;
 
+        //오디오
+        OnGameSceneStarted?.Invoke();
+
         //플레이어 초기화
-        var player = Object.FindFirstObjectByType<PlayerController>();
+        var player = FindFirstObjectByType<PlayerController>();
         if (player != null)
         {
             player.InitializePlayer();
         }
         //좀비스포너 초기화
-        var spawners = Object.FindObjectsByType<ZombieSpawner>(FindObjectsSortMode.None);
+        var spawners = FindObjectsByType<ZombieSpawner>(FindObjectsSortMode.None);
         foreach (var spawner in spawners)
         {
             spawner.enabled = true;

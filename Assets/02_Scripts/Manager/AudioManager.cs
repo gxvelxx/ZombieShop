@@ -7,25 +7,25 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
 
     [Header("Audio Sources")]
-    public AudioSource bgmSource;
-    public AudioSource sfxSource;
+    public AudioSource _bgmSource;
+    public AudioSource _sfxSource;
 
     [Header("Volume Setting")]
-    [Range(0f, 1f)] public float bgmVolume = 0.6f;
-    [Range(0f, 1f)] public float sfxVolume = 0.8f;
+    [Range(0f, 1f)] public float _bgmVolume = 0.6f;
+    [Range(0f, 1f)] public float _sfxVolume = 0.8f;
+
+    public AudioClip _gameStartSFX;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
 
-            //씬전환시 파괴되지 않게 직접 추가
-            bgmSource = gameObject.AddComponent<AudioSource>();
-            sfxSource = gameObject.AddComponent<AudioSource>();
-
-            bgmSource.loop = true;
+            GameManager.OnGameSceneStarted += PlayGameStartSound;
+            
+            _bgmSource.loop = true;
         }
         else
         {
@@ -36,8 +36,13 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        bgmSource.volume = bgmVolume;
-        sfxSource.volume = sfxVolume;
+        _bgmSource.volume = _bgmVolume;
+        _sfxSource.volume = _sfxVolume;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameSceneStarted -= PlayGameStartSound;
     }
 
     /// <summary>
@@ -50,9 +55,9 @@ public class AudioManager : MonoBehaviour
         if (clip == null)
             return;
 
-        bgmSource.clip = clip;
-        bgmSource.loop = loop;
-        bgmSource.Play();
+        _bgmSource.clip = clip;
+        _bgmSource.loop = loop;
+        _bgmSource.Play();
     }
 
     public void FadeBGM(AudioClip newClip, float duration = 1f)
@@ -62,31 +67,31 @@ public class AudioManager : MonoBehaviour
 
     private IEnumerator FadeRoutine(AudioClip newClip, float duration)
     {
-        float startVol = bgmVolume;
+        float startVol = _bgmVolume;
         float time = 0f;
 
         //페이드 아웃
         while (time < duration)
         {
-            bgmSource.volume = Mathf.Lerp(startVol, 0, time / duration);
+            _bgmSource.volume = Mathf.Lerp(startVol, 0, time / duration);
             time += Time.deltaTime;
             yield return null;
         }
 
-        bgmSource.Stop();
-        bgmSource.clip = newClip;
-        bgmSource.Play();
+        _bgmSource.Stop();
+        _bgmSource.clip = newClip;
+        _bgmSource.Play();
 
         //페이드 인
         time = 0f;
         while (time < duration)
         {
-            bgmSource.volume = Mathf.Lerp(0, startVol, time / duration);
+            _bgmSource.volume = Mathf.Lerp(0, startVol, time / duration);
             time += Time.deltaTime;
             yield return null;
         }
 
-        bgmSource.volume = startVol;
+        _bgmSource.volume = startVol;
     }
 
     /// <summary>
@@ -97,6 +102,12 @@ public class AudioManager : MonoBehaviour
     {
         if (clip == null) 
             return;
-        sfxSource.PlayOneShot(clip, sfxVolume);
+        _sfxSource.PlayOneShot(clip, _sfxVolume);
+    }
+
+    private void PlayGameStartSound()
+    {
+        if (_gameStartSFX != null)
+            PlaySFX(_gameStartSFX);
     }
 }
